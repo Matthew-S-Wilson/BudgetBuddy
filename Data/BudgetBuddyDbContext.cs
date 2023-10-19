@@ -29,7 +29,7 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
         {
             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
             UserName = "Administrator",
-            Email = "admina@strator.comx",
+            Email = "admin255@gmail.com",
             PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
         });
 
@@ -42,8 +42,8 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
         {
             Id = 1,
             IdentityUserId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
-            FirstName = "Admina",
-            LastName = "Strator",
+            FirstName = "Matthew",
+            LastName = "Wilson",
             Address = "101 Main Street",
         });
     }

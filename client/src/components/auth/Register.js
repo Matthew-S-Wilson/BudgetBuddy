@@ -32,7 +32,7 @@ export default function Register({ setLoggedInUser }) {
       };
       register(newUser).then((user) => {
         setLoggedInUser(user);
-        navigate("/");
+        navigate("/homepage");
       });
     }
   };
