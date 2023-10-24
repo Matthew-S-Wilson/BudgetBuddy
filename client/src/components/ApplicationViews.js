@@ -3,6 +3,7 @@ import { AuthorizedRoute } from "./auth/AuthorizedRoute";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import { HomePage } from "./calculator/Homepage.js";
+import ViewExpenses from "./calculator/ViewTotal.js";
 
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
@@ -24,6 +25,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
               <HomePage />
+            </AuthorizedRoute>
+          }
+        />
+                <Route
+          path="viewtotal"
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+
             </AuthorizedRoute>
           }
         />
