@@ -8,6 +8,10 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
 {
     private readonly IConfiguration _configuration;
     public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Expense> Expenses { get; set; } // Add this line
+        public DbSet<Income> Incomes { get; set; } // Add this line
+        public DbSet<Category> Categories { get; set; } // Add this line
+    public object IncomeCategories { get; internal set; }
 
     public BudgetBuddyDbContext(DbContextOptions<BudgetBuddyDbContext> context, IConfiguration config) : base(context)
     {
@@ -45,6 +49,73 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
             FirstName = "Matthew",
             LastName = "Wilson",
             Address = "101 Main Street",
+        });
+                modelBuilder.Entity<Expense>().HasData(new Expense []                         
+        {
+            new Expense
+            {
+            Id = 1,
+            Amount = 900,
+            Description = "Rent for my apartment",
+            UserId = 1,
+            },
+            new Expense
+            {
+            Id = 2,
+            Amount = 200,
+            Description = "Groceries",
+            UserId = 1,
+            },
+
+        });
+            modelBuilder.Entity<Income>().HasData(new Income []                         
+        {
+            new Income
+            {
+            Id = 1,
+            Amount =4000 ,
+            Description = "Paycheck at Disney for month",
+            UserId = 1,
+            },
+            new Income
+            {
+            Id = 2,
+            Amount = 200,
+            Description = "Monthly Disney Dividend",
+            UserId = 1,
+            },
+
+        });
+            modelBuilder.Entity<Category>().HasData(new Category []                         
+        {
+            new Category
+            {
+            Id = 1,
+            CategoryName = "Housing",
+            ExpenseOrIncome = "Expense",
+
+            },
+            new Category
+            {
+            Id = 2,
+            CategoryName = "Food",
+            ExpenseOrIncome = "Expense"
+            },
+
+
+            new Category
+            {
+            Id = 3,
+            CategoryName = "Rent",
+            ExpenseOrIncome = "Income"
+            },  
+            new Category
+            {
+            Id = 4,
+            CategoryName = "Part-Time Job",
+            ExpenseOrIncome = "Income"
+            },          
+
         });
     }
 }

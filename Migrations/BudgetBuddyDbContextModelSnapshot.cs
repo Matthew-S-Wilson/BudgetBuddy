@@ -22,6 +22,188 @@ namespace BudgetBuddy.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("BudgetBuddy.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ExpenseOrIncome")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryName = "Housing",
+                            ExpenseOrIncome = "Expense"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryName = "Food",
+                            ExpenseOrIncome = "Expense"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryName = "Rent",
+                            ExpenseOrIncome = "Income"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryName = "Part-Time Job",
+                            ExpenseOrIncome = "Income"
+                        });
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UserProfileId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Expenses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 900,
+                            Description = "Rent for my apartment",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 200,
+                            Description = "Groceries",
+                            UserId = 1
+                        });
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.ExpenseCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ExpenseId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ExpenseId");
+
+                    b.ToTable("ExpenseCategory");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.Income", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UserProfileId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Incomes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 4000,
+                            Description = "Paycheck at Disney for month",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 200,
+                            Description = "Monthly Disney Dividend",
+                            UserId = 1
+                        });
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.IncomeCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("IncomeCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IncomeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("IncomeCategoryId");
+
+                    b.HasIndex("IncomeId");
+
+                    b.ToTable("IncomeCategory");
+                });
+
             modelBuilder.Entity("BudgetBuddy.Models.UserProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -88,7 +270,7 @@ namespace BudgetBuddy.Migrations
                         new
                         {
                             Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-                            ConcurrencyStamp = "a14001c7-af38-4e4b-91de-1cf56232ad1e",
+                            ConcurrencyStamp = "241491d5-2381-4e7f-a820-c22afdc6b989",
                             Name = "Admin",
                             NormalizedName = "admin"
                         });
@@ -187,13 +369,13 @@ namespace BudgetBuddy.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3b316a2b-3c1d-4263-94c7-576777482fe9",
+                            ConcurrencyStamp = "f234b392-8f83-4e17-9566-f4033e061aa9",
                             Email = "admin255@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEIic/8uCzMQ01E0Ds/XSDNxZoKQyrhfhWSqLSoZEWaJFA+3slKzvgK/8/xWxhIHc6Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGJDs+HzFjkznBHMLGHKrPBNp89UxG8XEhKEVc3mq152vICQSwh+kDSo9offDVpQhQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f1743668-b965-485a-a049-4a3892ece73f",
+                            SecurityStamp = "ecd3d7b7-0df1-4402-8cc0-fc2a86ee6012",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         });
@@ -287,6 +469,66 @@ namespace BudgetBuddy.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BudgetBuddy.Models.Expense", b =>
+                {
+                    b.HasOne("BudgetBuddy.Models.UserProfile", "UserProfile")
+                        .WithMany("Expenses")
+                        .HasForeignKey("UserProfileId");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.ExpenseCategory", b =>
+                {
+                    b.HasOne("BudgetBuddy.Models.Category", "Category")
+                        .WithMany("ExpenseCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BudgetBuddy.Models.Expense", "Expense")
+                        .WithMany("ExpenseCategories")
+                        .HasForeignKey("ExpenseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Expense");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.Income", b =>
+                {
+                    b.HasOne("BudgetBuddy.Models.UserProfile", "UserProfile")
+                        .WithMany("Incomes")
+                        .HasForeignKey("UserProfileId");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.IncomeCategory", b =>
+                {
+                    b.HasOne("BudgetBuddy.Models.Category", "Category")
+                        .WithMany("IncomeCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BudgetBuddy.Models.IncomeCategory", null)
+                        .WithMany("IncomeCategories")
+                        .HasForeignKey("IncomeCategoryId");
+
+                    b.HasOne("BudgetBuddy.Models.Income", "Income")
+                        .WithMany("IncomeCategories")
+                        .HasForeignKey("IncomeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Income");
+                });
+
             modelBuilder.Entity("BudgetBuddy.Models.UserProfile", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
@@ -345,6 +587,35 @@ namespace BudgetBuddy.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.Category", b =>
+                {
+                    b.Navigation("ExpenseCategories");
+
+                    b.Navigation("IncomeCategories");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.Expense", b =>
+                {
+                    b.Navigation("ExpenseCategories");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.Income", b =>
+                {
+                    b.Navigation("IncomeCategories");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.IncomeCategory", b =>
+                {
+                    b.Navigation("IncomeCategories");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.UserProfile", b =>
+                {
+                    b.Navigation("Expenses");
+
+                    b.Navigation("Incomes");
                 });
 #pragma warning restore 612, 618
         }

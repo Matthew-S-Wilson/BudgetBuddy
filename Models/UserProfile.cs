@@ -20,6 +20,8 @@ public class UserProfile
     public string IdentityUserId { get; set; }
 
     public IdentityUser IdentityUser { get; set; }
+    public List<Income> Incomes { get; set; }
+    public List<Expense> Expenses { get; set; }
 
 
 }

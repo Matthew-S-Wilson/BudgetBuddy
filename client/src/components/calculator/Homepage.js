@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { createExpense } from "../../managers/expenseManager.js";
+import { createIncome } from "../../managers/incomeManagaer.js";
 
-export const HomePage = () => {
+
+
+export const HomePage = ({loggedInUser}) => {
   const [showExpenseInput, setShowExpenseInput] = useState(false);
   const [showIncomeInput, setShowIncomeInput] = useState(false);
   const [expenseDescription, setExpenseDescription] = useState("");
@@ -57,28 +61,48 @@ export const HomePage = () => {
 
   const handleExpenseSubmit = () => {
     const newExpense = {
+      userId: loggedInUser.id,   
       description: expenseDescription,
       amount: expenseAmount,
       categories: selectedExpenseCategories,
     };
-    console.log("Saving the following expense: ", newExpense);
-    setExpenseDescription("");
-    setExpenseAmount("");
-    setSelectedExpenseCategories([]);
-    setShowExpenseInput(false);
+    
+    createExpense(newExpense) // Call the createExpense function to save the expense
+      .then((res) => {
+        console.log("Expense successfully created:", res);
+        setExpenseDescription("");
+        setExpenseAmount("");
+        setSelectedExpenseCategories([]);
+        setShowExpenseInput(false);
+      })
+      .catch((error) => {
+        console.error("Failed to create expense:", error);
+        // Handle error here
+      });
   };
 
   const handleIncomeSubmit = () => {
     const newIncome = {
+      userId: loggedInUser.id,  
       description: incomeDescription,
       amount: incomeAmount,
       categories: selectedIncomeCategories,
     };
     console.log("Saving the following income: ", newIncome);
-    setIncomeDescription("");
-    setIncomeAmount("");
-    setSelectedIncomeCategories([]);
-    setShowIncomeInput(false);
+
+    
+    createIncome(newIncome) // Call the createIncome function to save the income
+    .then((res) => {
+      console.log("Income successfully created:", res);
+      setIncomeDescription("");
+      setIncomeAmount("");
+      setSelectedIncomeCategories([]);
+      setShowIncomeInput(false);
+    })
+    .catch((error) => {
+      console.error("Failed to create income:", error);
+      // Handle error here
+    });
   };
 
   return (
@@ -101,6 +125,7 @@ export const HomePage = () => {
             value={expenseAmount}
             onChange={(e) => handleAmountChange(e, "expense")}
           />
+
           <br />
           <div>
             <label>Expense Categories:</label>
@@ -137,10 +162,12 @@ export const HomePage = () => {
             />
             <label>Childcare</label>
           </div>
+
           <br />
           <button onClick={handleExpenseSubmit}>Submit Expense</button>
         </div>
       )}
+      
       {showIncomeInput && (
         <div>
           <input

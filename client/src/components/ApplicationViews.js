@@ -24,7 +24,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           path="homepage"
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
-              <HomePage />
+              <HomePage loggedInUser={loggedInUser}/>
             </AuthorizedRoute>
           }
         />
