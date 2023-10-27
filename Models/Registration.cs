@@ -1,3 +1,4 @@
+
 namespace BudgetBuddy.Models;
 
 public class Registration

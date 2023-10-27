@@ -50,6 +50,20 @@ namespace BudgetBuddy.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CategoryName = table.Column<string>(type: "text", nullable: true),
+                    ExpenseOrIncome = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -176,15 +190,144 @@ namespace BudgetBuddy.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Expenses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Amount = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    UserProfileId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Expenses_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Incomes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Amount = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    UserProfileId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Incomes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Incomes_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExpenseCategory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ExpenseId = table.Column<int>(type: "integer", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExpenseCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExpenseCategory_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExpenseCategory_Expenses_ExpenseId",
+                        column: x => x.ExpenseId,
+                        principalTable: "Expenses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IncomeCategory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    IncomeId = table.Column<int>(type: "integer", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    IncomeCategoryId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IncomeCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IncomeCategory_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IncomeCategory_IncomeCategory_IncomeCategoryId",
+                        column: x => x.IncomeCategoryId,
+                        principalTable: "IncomeCategory",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_IncomeCategory_Incomes_IncomeId",
+                        column: x => x.IncomeId,
+                        principalTable: "Incomes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "a14001c7-af38-4e4b-91de-1cf56232ad1e", "Admin", "admin" });
+                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "241491d5-2381-4e7f-a820-c22afdc6b989", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "3b316a2b-3c1d-4263-94c7-576777482fe9", "admin255@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEIic/8uCzMQ01E0Ds/XSDNxZoKQyrhfhWSqLSoZEWaJFA+3slKzvgK/8/xWxhIHc6Q==", null, false, "f1743668-b965-485a-a049-4a3892ece73f", false, "Administrator" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "f234b392-8f83-4e17-9566-f4033e061aa9", "admin255@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEGJDs+HzFjkznBHMLGHKrPBNp89UxG8XEhKEVc3mq152vICQSwh+kDSo9offDVpQhQ==", null, false, "ecd3d7b7-0df1-4402-8cc0-fc2a86ee6012", false, "Administrator" });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CategoryName", "ExpenseOrIncome" },
+                values: new object[,]
+                {
+                    { 1, "Housing", "Expense" },
+                    { 2, "Food", "Expense" },
+                    { 3, "Rent", "Income" },
+                    { 4, "Part-Time Job", "Income" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Expenses",
+                columns: new[] { "Id", "Amount", "Description", "UserId", "UserProfileId" },
+                values: new object[,]
+                {
+                    { 1, 900, "Rent for my apartment", 1, null },
+                    { 2, 200, "Groceries", 1, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Incomes",
+                columns: new[] { "Id", "Amount", "Description", "UserId", "UserProfileId" },
+                values: new object[,]
+                {
+                    { 1, 4000, "Paycheck at Disney for month", 1, null },
+                    { 2, 200, "Monthly Disney Dividend", 1, null }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -234,6 +377,41 @@ namespace BudgetBuddy.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExpenseCategory_CategoryId",
+                table: "ExpenseCategory",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpenseCategory_ExpenseId",
+                table: "ExpenseCategory",
+                column: "ExpenseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Expenses_UserProfileId",
+                table: "Expenses",
+                column: "UserProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncomeCategory_CategoryId",
+                table: "IncomeCategory",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncomeCategory_IncomeCategoryId",
+                table: "IncomeCategory",
+                column: "IncomeCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncomeCategory_IncomeId",
+                table: "IncomeCategory",
+                column: "IncomeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Incomes_UserProfileId",
+                table: "Incomes",
+                column: "UserProfileId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserProfiles_IdentityUserId",
                 table: "UserProfiles",
                 column: "IdentityUserId");
@@ -257,10 +435,25 @@ namespace BudgetBuddy.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "UserProfiles");
+                name: "ExpenseCategory");
+
+            migrationBuilder.DropTable(
+                name: "IncomeCategory");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Expenses");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Incomes");
+
+            migrationBuilder.DropTable(
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
