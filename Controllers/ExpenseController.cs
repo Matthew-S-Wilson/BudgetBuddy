@@ -48,6 +48,11 @@ UserProfile userProfile = _dbContext.UserProfiles.SingleOrDefault((u)=>u.Id == e
     _dbContext.SaveChanges();
     return Created($"api/expense/{expense.Id}", expense);
 }
-
+        [HttpGet("expenses")]
+        public IActionResult GetExpenses()
+        {
+            var expenses = _dbContext.Expenses.ToList();
+            return Ok(expenses);
+        }
     }
 }
