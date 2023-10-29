@@ -17,3 +17,17 @@ export const createIncome = (incomeData) => {
     }
   });
 };
+export const getAllIncomes = (userId) => {
+  const _apiUrl = `/api/income/${userId}`;
+  return fetch(_apiUrl)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to fetch incomes");
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Error fetching incomes:", error);
+      throw error; // Rethrow the error to handle it in the component
+    });
+};

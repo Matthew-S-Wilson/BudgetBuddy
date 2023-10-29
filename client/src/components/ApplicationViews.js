@@ -4,6 +4,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import { HomePage } from "./calculator/Homepage.js";
 import ViewExpenses from "./calculator/ViewTotal.js";
+import ViewTotals from "./calculator/ViewTotal.js";
 
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
@@ -32,7 +33,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           path="viewtotal"
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
-
+              <ViewTotals loggedInUser={loggedInUser}/>
             </AuthorizedRoute>
           }
         />

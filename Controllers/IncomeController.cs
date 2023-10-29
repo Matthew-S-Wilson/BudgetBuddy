@@ -48,8 +48,11 @@ namespace YourProject.Controllers
             _dbContext.SaveChanges();
             return Created($"api/income/{income.Id}", income);
         }
-
-
-    }
+[HttpGet("incomes")] // Updated route to specify incomes
+public IActionResult GetIncomes()
+{
+    var incomes = _dbContext.Incomes.ToList();
+    return Ok(incomes);
 }
+    }}
 
