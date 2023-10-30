@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllExpenses } from "../../managers/expenseManager.js";
-import { getAllIncomes } from "../../managers/incomeManagaer.js";
+import { getAllIncomes } from "../../managers/incomeManager.js";
 
 const ViewTotals = ({ loggedInUser }) => {
   const [expenses, setExpenses] = useState([]);

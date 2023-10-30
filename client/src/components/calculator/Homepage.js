@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createExpense } from "../../managers/expenseManager.js";
-import { createIncome } from "../../managers/incomeManagaer.js";
+import { createIncome } from "../../managers/incomeManager.js";
+import { getIncomeCategories, getExpenseCategories } from "../../managers/categoryManager.js";
 
-
-
-export const HomePage = ({loggedInUser}) => {
+export const HomePage = ({ loggedInUser }) => {
   const [showExpenseInput, setShowExpenseInput] = useState(false);
   const [showIncomeInput, setShowIncomeInput] = useState(false);
   const [expenseDescription, setExpenseDescription] = useState("");
@@ -13,6 +12,19 @@ export const HomePage = ({loggedInUser}) => {
   const [incomeDescription, setIncomeDescription] = useState("");
   const [incomeAmount, setIncomeAmount] = useState("");
   const [selectedIncomeCategories, setSelectedIncomeCategories] = useState([]);
+  const [expenseCategories, setExpenseCategories] = useState([]);
+  const [incomeCategories, setIncomeCategories] = useState([]);
+
+  useEffect(() => {
+    // Fetch both expense and income categories
+    getExpenseCategories()
+      .then((data) => setExpenseCategories(data || []))
+      .catch((error) => console.error("Error fetching expense categories:", error));
+
+    getIncomeCategories()
+      .then((data) => setIncomeCategories(data || []))
+      .catch((error) => console.error("Error fetching income categories:", error));
+  }, []);
 
   const handleNewExpense = () => {
     setShowExpenseInput(true);
@@ -130,44 +142,27 @@ export const HomePage = ({loggedInUser}) => {
           <div>
             <label>Expense Categories:</label>
             <br />
-            <input
-              type="checkbox"
-              value="housing"
-              checked={selectedExpenseCategories.includes("housing")}
-              onChange={handleExpenseCategoryChange}
-            />
-            <label>Housing</label>
-            <br />
-            <input
-              type="checkbox"
-              value="groceries"
-              checked={selectedExpenseCategories.includes("groceries")}
-              onChange={handleExpenseCategoryChange}
-            />
-            <label>Groceries</label>
-            <br />
-            <input
-              type="checkbox"
-              value="education"
-              checked={selectedExpenseCategories.includes("education")}
-              onChange={handleExpenseCategoryChange}
-            />
-            <label>Education</label>
-            <br />
-            <input
-              type="checkbox"
-              value="childcare"
-              checked={selectedExpenseCategories.includes("childcare")}
-              onChange={handleExpenseCategoryChange}
-            />
-            <label>Childcare</label>
+            {expenseCategories
+              .filter((category) => category.expenseOrIncome === "Expense")
+              .map((category) => (
+                <div key={category.id}>
+                  <input
+                    type="checkbox"
+                    value={category.categoryName}
+                    checked={selectedExpenseCategories.includes(category.categoryName)}
+                    onChange={handleExpenseCategoryChange}
+                  />
+                  <label>{category.categoryName}</label>
+                  <br />
+                </div>
+              ))}
           </div>
 
           <br />
           <button onClick={handleExpenseSubmit}>Submit Expense</button>
         </div>
       )}
-      
+
       {showIncomeInput && (
         <div>
           <input
@@ -187,45 +182,20 @@ export const HomePage = ({loggedInUser}) => {
           <div>
             <label>Income Categories:</label>
             <br />
-            <input
-              type="checkbox"
-              value="full-time job"
-              checked={selectedIncomeCategories.includes("full-time job")}
-              onChange={handleIncomeCategoryChange}
-            />
-            <label>Full-time Job</label>
-            <br />
-            <input
-              type="checkbox"
-              value="part-time job"
-              checked={selectedIncomeCategories.includes("part-time job")}
-              onChange={handleIncomeCategoryChange}
-            />
-            <label>Part-time Job</label>
-            <br />
-            <input
-              type="checkbox"
-              value="investments"
-              checked={selectedIncomeCategories.includes("investments")}
-              onChange={handleIncomeCategoryChange}
-            />
-            <label>Investments</label>
-            <br />
-            <input
-              type="checkbox"
-              value="rent"
-              checked={selectedIncomeCategories.includes("rent")}
-              onChange={handleIncomeCategoryChange}
-            />
-            <label>Rent</label>
-            <br />
-            <input
-              type="checkbox"
-              value="misc"
-              checked={selectedIncomeCategories.includes("misc")}
-              onChange={handleIncomeCategoryChange}
-            />
-            <label>Misc</label>
+            {incomeCategories
+              .filter((category) => category.expenseOrIncome === "Income")
+              .map((category) => (
+                <div key={category.id}>
+                  <input
+                    type="checkbox"
+                    value={category.categoryName}
+                    checked={selectedIncomeCategories.includes(category.categoryName)}
+                    onChange={handleIncomeCategoryChange}
+                  />
+                  <label>{category.categoryName}</label>
+                  <br />
+                </div>
+              ))}
           </div>
           <br />
           <button onClick={handleIncomeSubmit}>Submit Income</button>
@@ -233,4 +203,4 @@ export const HomePage = ({loggedInUser}) => {
       )}
     </div>
   );
-};
+}
