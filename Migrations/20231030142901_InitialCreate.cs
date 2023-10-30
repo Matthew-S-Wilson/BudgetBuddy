@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -199,6 +200,7 @@ namespace BudgetBuddy.Migrations
                     Amount = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<int>(type: "integer", nullable: false),
+                    Categories = table.Column<List<string>>(type: "text[]", nullable: true),
                     UserProfileId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -220,6 +222,7 @@ namespace BudgetBuddy.Migrations
                     Amount = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<int>(type: "integer", nullable: false),
+                    Categories = table.Column<List<string>>(type: "text[]", nullable: true),
                     UserProfileId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -233,7 +236,7 @@ namespace BudgetBuddy.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExpenseCategory",
+                name: "ExpenseCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -243,15 +246,15 @@ namespace BudgetBuddy.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpenseCategory", x => x.Id);
+                    table.PrimaryKey("PK_ExpenseCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExpenseCategory_Categories_CategoryId",
+                        name: "FK_ExpenseCategories_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ExpenseCategory_Expenses_ExpenseId",
+                        name: "FK_ExpenseCategories_Expenses_ExpenseId",
                         column: x => x.ExpenseId,
                         principalTable: "Expenses",
                         principalColumn: "Id",
@@ -259,7 +262,7 @@ namespace BudgetBuddy.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IncomeCategory",
+                name: "IncomeCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -270,20 +273,20 @@ namespace BudgetBuddy.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IncomeCategory", x => x.Id);
+                    table.PrimaryKey("PK_IncomeCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IncomeCategory_Categories_CategoryId",
+                        name: "FK_IncomeCategories_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_IncomeCategory_IncomeCategory_IncomeCategoryId",
+                        name: "FK_IncomeCategories_IncomeCategories_IncomeCategoryId",
                         column: x => x.IncomeCategoryId,
-                        principalTable: "IncomeCategory",
+                        principalTable: "IncomeCategories",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_IncomeCategory_Incomes_IncomeId",
+                        name: "FK_IncomeCategories_Incomes_IncomeId",
                         column: x => x.IncomeId,
                         principalTable: "Incomes",
                         principalColumn: "Id",
@@ -293,12 +296,12 @@ namespace BudgetBuddy.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "241491d5-2381-4e7f-a820-c22afdc6b989", "Admin", "admin" });
+                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "d13f4d7e-104a-4d0e-8a2a-f3bdb04aba62", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "f234b392-8f83-4e17-9566-f4033e061aa9", "admin255@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEGJDs+HzFjkznBHMLGHKrPBNp89UxG8XEhKEVc3mq152vICQSwh+kDSo9offDVpQhQ==", null, false, "ecd3d7b7-0df1-4402-8cc0-fc2a86ee6012", false, "Administrator" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "10381d77-6e02-49d8-99f2-daa4ad099994", "admin255@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEFYNA8eyVMfKfNH7KaSIy5d6PxRvHtRQmXn82TPdDiocgKfb4TKSh9dGQcLEkzqQrw==", null, false, "996879c8-01c9-475d-a464-7ead69407e60", false, "Administrator" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
@@ -313,20 +316,20 @@ namespace BudgetBuddy.Migrations
 
             migrationBuilder.InsertData(
                 table: "Expenses",
-                columns: new[] { "Id", "Amount", "Description", "UserId", "UserProfileId" },
+                columns: new[] { "Id", "Amount", "Categories", "Description", "UserId", "UserProfileId" },
                 values: new object[,]
                 {
-                    { 1, 900, "Rent for my apartment", 1, null },
-                    { 2, 200, "Groceries", 1, null }
+                    { 1, 900, null, "Rent for my apartment", 1, null },
+                    { 2, 200, null, "Groceries", 1, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Incomes",
-                columns: new[] { "Id", "Amount", "Description", "UserId", "UserProfileId" },
+                columns: new[] { "Id", "Amount", "Categories", "Description", "UserId", "UserProfileId" },
                 values: new object[,]
                 {
-                    { 1, 4000, "Paycheck at Disney for month", 1, null },
-                    { 2, 200, "Monthly Disney Dividend", 1, null }
+                    { 1, 4000, null, "Paycheck at Disney for month", 1, null },
+                    { 2, 200, null, "Monthly Disney Dividend", 1, null }
                 });
 
             migrationBuilder.InsertData(
@@ -377,13 +380,13 @@ namespace BudgetBuddy.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpenseCategory_CategoryId",
-                table: "ExpenseCategory",
+                name: "IX_ExpenseCategories_CategoryId",
+                table: "ExpenseCategories",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpenseCategory_ExpenseId",
-                table: "ExpenseCategory",
+                name: "IX_ExpenseCategories_ExpenseId",
+                table: "ExpenseCategories",
                 column: "ExpenseId");
 
             migrationBuilder.CreateIndex(
@@ -392,18 +395,18 @@ namespace BudgetBuddy.Migrations
                 column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IncomeCategory_CategoryId",
-                table: "IncomeCategory",
+                name: "IX_IncomeCategories_CategoryId",
+                table: "IncomeCategories",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IncomeCategory_IncomeCategoryId",
-                table: "IncomeCategory",
+                name: "IX_IncomeCategories_IncomeCategoryId",
+                table: "IncomeCategories",
                 column: "IncomeCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IncomeCategory_IncomeId",
-                table: "IncomeCategory",
+                name: "IX_IncomeCategories_IncomeId",
+                table: "IncomeCategories",
                 column: "IncomeId");
 
             migrationBuilder.CreateIndex(
@@ -435,10 +438,10 @@ namespace BudgetBuddy.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ExpenseCategory");
+                name: "ExpenseCategories");
 
             migrationBuilder.DropTable(
-                name: "IncomeCategory");
+                name: "IncomeCategories");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

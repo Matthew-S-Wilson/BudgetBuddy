@@ -8,10 +8,11 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
 {
     private readonly IConfiguration _configuration;
     public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<Expense> Expenses { get; set; } // Add this line
-        public DbSet<Income> Incomes { get; set; } // Add this line
-        public DbSet<Category> Categories { get; set; } // Add this line
-    public object IncomeCategories { get; internal set; }
+    public DbSet<Expense> Expenses { get; set; } // Add this line
+    public DbSet<Income> Incomes { get; set; } // Add this line
+    public DbSet<Category> Categories { get; set; } // Add this line
+    public DbSet<IncomeCategory> IncomeCategories { get; set; }
+    public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
 
     public BudgetBuddyDbContext(DbContextOptions<BudgetBuddyDbContext> context, IConfiguration config) : base(context)
     {
@@ -42,7 +43,7 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
             RoleId = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
             UserId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f"
         });
-        modelBuilder.Entity<UserProfile>().HasData(new UserProfile                          
+        modelBuilder.Entity<UserProfile>().HasData(new UserProfile
         {
             Id = 1,
             IdentityUserId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
@@ -50,8 +51,8 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
             LastName = "Wilson",
             Address = "101 Main Street",
         });
-                modelBuilder.Entity<Expense>().HasData(new Expense []                         
-        {
+        modelBuilder.Entity<Expense>().HasData(new Expense[]
+{
             new Expense
             {
             Id = 1,
@@ -67,9 +68,9 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
             UserId = 1,
             },
 
-        });
-            modelBuilder.Entity<Income>().HasData(new Income []                         
-        {
+});
+        modelBuilder.Entity<Income>().HasData(new Income[]
+    {
             new Income
             {
             Id = 1,
@@ -85,9 +86,9 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
             UserId = 1,
             },
 
-        });
-            modelBuilder.Entity<Category>().HasData(new Category []                         
-        {
+    });
+        modelBuilder.Entity<Category>().HasData(new Category[]
+    {
             new Category
             {
             Id = 1,
@@ -108,14 +109,15 @@ public class BudgetBuddyDbContext : IdentityDbContext<IdentityUser>
             Id = 3,
             CategoryName = "Rent",
             ExpenseOrIncome = "Income"
-            },  
+            },
             new Category
             {
             Id = 4,
             CategoryName = "Part-Time Job",
             ExpenseOrIncome = "Income"
-            },          
+            },
 
-        });
+    });
+
     }
 }

@@ -3,7 +3,7 @@ const _apiUrl = "/api/income";
 
 export const createIncome = (incomeData) => {
     console.log(_apiUrl);
-  return fetch(_apiUrl, {
+    return fetch(_apiUrl+"/create-income", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,4 +30,21 @@ export const getAllIncomes = (userId) => {
       console.error("Error fetching incomes:", error);
       throw error; // Rethrow the error to handle it in the component
     });
+};
+export const updateIncome = (incomeId, updatedData) => {
+  const _apiUrl = `/api/income`; 
+
+  return fetch(`${_apiUrl}/${incomeId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedData),
+  }).then((res) => {
+    if (res.status !== 200) {
+      return Promise.reject("Failed to update income");
+    } else {
+      return res.json();
+    }
+  });
 };
