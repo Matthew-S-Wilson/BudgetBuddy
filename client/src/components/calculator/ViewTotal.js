@@ -99,35 +99,41 @@ const ViewTotals = ({ loggedInUser }) => {
       })
       .catch((error) => console.error("Error updating income:", error));
   };
+  const calculateNetIncome = () => {
+    const totalExpense = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
+    const totalIncome = incomes.reduce((acc, income) => acc + parseFloat(income.amount), 0);
+    const updatedDifference = totalIncome - totalExpense;
+    setTotalExpense(totalExpense);
+    setTotalIncome(totalIncome);
+    setDifference(updatedDifference);
+  };
 
   useEffect(() => {
     if (loggedInUser) {
-      getExpenseCategories()
-        .then((data) => setAvailableCategories(data || []))
-        .catch((error) => console.error("Error fetching expense categories:", error));
-      getIncomeCategories()
-        .then((data) => setAvailableIncomeCategories(data || []))
-        .catch((error) => console.error("Error fetching income categories:", error));
-        getAllExpenses(loggedInUser.id)
-        .then((data) => {
-          setExpenses(data || []);
-          const total = data.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
-          setTotalExpense(total);
-          const updatedDifference = totalIncome - total;
-          setDifference(updatedDifference); // Update the difference when total expense changes
-        })
-        .catch((error) => console.error("Error fetching expenses:", error));
+      Promise.all([
+        getExpenseCategories(),
+        getIncomeCategories(),
+        getAllExpenses(loggedInUser.id),
         getAllIncomes(loggedInUser.id)
-        .then((data) => {
-          setIncomes(data || []);
-          const total = data.reduce((acc, income) => acc + parseFloat(income.amount), 0);
-          setTotalIncome(total);
-          const updatedDifference = total - totalExpense;
-          setDifference(updatedDifference); // Update the difference when total income changes
+      ])
+        .then(([expenseCategories, incomeCategories, expensesData, incomesData]) => {
+          setAvailableCategories(expenseCategories || []);
+          setAvailableIncomeCategories(incomeCategories || []);
+          setExpenses(expensesData || []);
+          setIncomes(incomesData || []);
+  
+          const totalExpense = expensesData.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
+          const totalIncome = incomesData.reduce((acc, income) => acc + parseFloat(income.amount), 0);
+  
+          const updatedDifference = totalIncome - totalExpense;
+          setTotalExpense(totalExpense);
+          setTotalIncome(totalIncome);
+          setDifference(updatedDifference);
         })
-        .catch((error) => console.error("Error fetching incomes:", error));
+        .catch((error) => console.error("Error fetching data:", error));
     }
   }, [loggedInUser]);
+  
 
   return (
     <div>
@@ -259,7 +265,9 @@ const ViewTotals = ({ loggedInUser }) => {
       <h2>Total Expenses: {totalExpense}</h2>
       <h2>Total Income: {totalIncome}</h2>
       <br></br>
+      
       <h2>Net Income: {difference}</h2>
+      <button onClick={calculateNetIncome}>Calculate Net Income</button>
     </div>
   );
 };

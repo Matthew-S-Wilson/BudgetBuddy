@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BudgetBuddy.Migrations
 {
     [DbContext(typeof(BudgetBuddyDbContext))]
-    [Migration("20231030142901_InitialCreate")]
+    [Migration("20231031161227_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -279,7 +279,7 @@ namespace BudgetBuddy.Migrations
                         new
                         {
                             Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-                            ConcurrencyStamp = "d13f4d7e-104a-4d0e-8a2a-f3bdb04aba62",
+                            ConcurrencyStamp = "5eb1f9a2-5974-4872-b9f1-8565c78495bf",
                             Name = "Admin",
                             NormalizedName = "admin"
                         });
@@ -378,13 +378,13 @@ namespace BudgetBuddy.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "10381d77-6e02-49d8-99f2-daa4ad099994",
+                            ConcurrencyStamp = "377ee1ed-dc27-4d4f-8945-6593be2f3a6d",
                             Email = "admin255@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEFYNA8eyVMfKfNH7KaSIy5d6PxRvHtRQmXn82TPdDiocgKfb4TKSh9dGQcLEkzqQrw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDuKbkirQNzNKT/XhywbELzWWZj48LMlqsSz/PDd49PQmRwaicmBrePqYlRkcJ8otg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "996879c8-01c9-475d-a464-7ead69407e60",
+                            SecurityStamp = "d0a709a8-cff3-4cd9-847b-915faaca149d",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         });

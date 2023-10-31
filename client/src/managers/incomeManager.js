@@ -28,7 +28,7 @@ export const getAllIncomes = (userId) => {
     })
     .catch((error) => {
       console.error("Error fetching incomes:", error);
-      throw error; // Rethrow the error to handle it in the component
+      throw error; 
     });
 };
 export const updateIncome = (incomeId, updatedData) => {

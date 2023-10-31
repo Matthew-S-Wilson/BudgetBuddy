@@ -296,12 +296,12 @@ namespace BudgetBuddy.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "d13f4d7e-104a-4d0e-8a2a-f3bdb04aba62", "Admin", "admin" });
+                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "5eb1f9a2-5974-4872-b9f1-8565c78495bf", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "10381d77-6e02-49d8-99f2-daa4ad099994", "admin255@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEFYNA8eyVMfKfNH7KaSIy5d6PxRvHtRQmXn82TPdDiocgKfb4TKSh9dGQcLEkzqQrw==", null, false, "996879c8-01c9-475d-a464-7ead69407e60", false, "Administrator" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "377ee1ed-dc27-4d4f-8945-6593be2f3a6d", "admin255@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEDuKbkirQNzNKT/XhywbELzWWZj48LMlqsSz/PDd49PQmRwaicmBrePqYlRkcJ8otg==", null, false, "d0a709a8-cff3-4cd9-847b-915faaca149d", false, "Administrator" });
 
             migrationBuilder.InsertData(
                 table: "Categories",

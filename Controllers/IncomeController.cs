@@ -67,7 +67,7 @@ namespace YourProject.Controllers
             return Created($"api/income/{income.Id}", income);
         }
 
-        [HttpGet("incomes")] // Updated route to specify incomes
+        [HttpGet("incomes")] 
         public IActionResult GetIncomes()
         {
             var incomes = _dbContext.Incomes.Include(e => e.IncomeCategories).ThenInclude(ec => ec.Category).ToList();
@@ -86,10 +86,10 @@ namespace YourProject.Controllers
             income.Description = updatedIncome.Description;
             income.Amount = updatedIncome.Amount;
 
-            // Clear existing categories
+            // This should clear the exsisting categories
             income.IncomeCategories.Clear();
 
-            // Add new categories
+            // this should add the new cats
             foreach (var categoryName in updatedIncome.Categories)
             {
                 var category = _dbContext.Categories.FirstOrDefault(c => c.CategoryName == categoryName);
@@ -104,14 +104,14 @@ namespace YourProject.Controllers
                 }
             }
 
-            // Update the categories array
+            // update the categories array
             income.Categories = updatedIncome.Categories;
 
             _dbContext.SaveChanges();
 
             return Ok(income);
         }
-        
+
         [HttpDelete("{id}")]
         public IActionResult DeleteIncome(int id)
         {
@@ -125,7 +125,7 @@ namespace YourProject.Controllers
             _dbContext.Incomes.Remove(income);
             _dbContext.SaveChanges();
 
-            return NoContent(); // Returns 204 No Content on success
+            return NoContent(); //Should returns 204 No Content on success
         }
     }
 
