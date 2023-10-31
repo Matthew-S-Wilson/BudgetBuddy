@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { getAllExpenses, updateExpense } from "../../managers/expenseManager.js";
 import { getAllIncomes, updateIncome } from "../../managers/incomeManager.js";
 import { getExpenseCategories, getIncomeCategories } from "../../managers/categoryManager.js";
+import { deleteExpense } from "../../managers/expenseManager.js";
+import { deleteIncome } from "../../managers/incomeManager.js";
 
 const ViewTotals = ({ loggedInUser }) => {
   const [expenses, setExpenses] = useState([]);
@@ -16,6 +18,9 @@ const ViewTotals = ({ loggedInUser }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [availableIncomeCategories, setAvailableIncomeCategories] = useState([]);
   const [selectedIncomeCategories, setSelectedIncomeCategories] = useState([]);
+  const [totalExpense, setTotalExpense] = useState(0);
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [difference, setDifference] = useState(0);
 
   const handleEdit = (expense) => {
     setEditingExpense(expense);
@@ -38,6 +43,7 @@ const ViewTotals = ({ loggedInUser }) => {
       amount: updatedAmount,
       categories: selectedCategories,
     };
+
     updateExpense(editingExpense.id, updatedData)
       .then((res) => {
         console.log("Expense updated:", res);
@@ -50,6 +56,27 @@ const ViewTotals = ({ loggedInUser }) => {
           .catch((error) => console.error("Error fetching expenses:", error));
       })
       .catch((error) => console.error("Error updating expense:", error));
+  };
+  const handleExpenseDelete = (expenseId) => {
+    deleteExpense(expenseId)
+      .then((res) => {
+        console.log("Expense deleted:", res);
+        // Refresh the expenses list
+        getAllExpenses(loggedInUser.id)
+          .then((data) => setExpenses(data || []))
+          .catch((error) => console.error("Error fetching expenses:", error));
+      })
+      .catch((error) => console.error("Error deleting expense:", error));
+  };
+  const handleIncomeDelete = (incomeId) => {
+    deleteIncome(incomeId)
+      .then((res) => {
+        console.log("Income deleted:", res);
+        getAllIncomes(loggedInUser.id)
+          .then((data) => setIncomes(data || []))
+          .catch((error) => console.error("Error fetching incomes:", error));
+      })
+      .catch((error) => console.error("Error deleting income:", error));
   };
 
   const handleIncomeUpdate = () => {
@@ -81,11 +108,23 @@ const ViewTotals = ({ loggedInUser }) => {
       getIncomeCategories()
         .then((data) => setAvailableIncomeCategories(data || []))
         .catch((error) => console.error("Error fetching income categories:", error));
-      getAllExpenses(loggedInUser.id)
-        .then((data) => setExpenses(data || []))
+        getAllExpenses(loggedInUser.id)
+        .then((data) => {
+          setExpenses(data || []);
+          const total = data.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
+          setTotalExpense(total);
+          const updatedDifference = totalIncome - total;
+          setDifference(updatedDifference); // Update the difference when total expense changes
+        })
         .catch((error) => console.error("Error fetching expenses:", error));
-      getAllIncomes(loggedInUser.id)
-        .then((data) => setIncomes(data || []))
+        getAllIncomes(loggedInUser.id)
+        .then((data) => {
+          setIncomes(data || []);
+          const total = data.reduce((acc, income) => acc + parseFloat(income.amount), 0);
+          setTotalIncome(total);
+          const updatedDifference = total - totalExpense;
+          setDifference(updatedDifference); // Update the difference when total income changes
+        })
         .catch((error) => console.error("Error fetching incomes:", error));
     }
   }, [loggedInUser]);
@@ -146,8 +185,11 @@ const ViewTotals = ({ loggedInUser }) => {
                 <p>Amount: {expense.amount}</p>
                 <p>Categories: {expense.categories.join(", ")}</p>
                 <button onClick={() => handleEdit(expense)}>Edit</button>
+                <button onClick={() => handleExpenseDelete(expense.id)}>Delete</button> 
+                
               </div>
             )}
+            
           </div>
         ))
       ) : (
@@ -206,6 +248,7 @@ const ViewTotals = ({ loggedInUser }) => {
                 <p>Amount: {income.amount}</p>
                 <p>Categories: {income.categories.join(", ")}</p>
                 <button onClick={() => handleIncomeEdit(income)}>Edit</button>
+                <button onClick={() => handleIncomeDelete(income.id)}>Delete</button> 
               </div>
             )}
           </div>
@@ -213,6 +256,10 @@ const ViewTotals = ({ loggedInUser }) => {
       ) : (
         <p>No incomes to display</p>
       )}
+      <h2>Total Expenses: {totalExpense}</h2>
+      <h2>Total Income: {totalIncome}</h2>
+      <br></br>
+      <h2>Net Income: {difference}</h2>
     </div>
   );
 };

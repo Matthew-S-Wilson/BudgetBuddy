@@ -48,3 +48,19 @@ export const updateIncome = (incomeId, updatedData) => {
     }
   });
 };
+export const deleteIncome = (incomeId) => {
+  const _apiUrl = `/api/income`;
+
+  return fetch(`${_apiUrl}/${incomeId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    if (res.status === 204) {
+      return "Income deleted successfully";
+    } else {
+      return Promise.reject("Failed to delete income");
+    }
+  });
+};

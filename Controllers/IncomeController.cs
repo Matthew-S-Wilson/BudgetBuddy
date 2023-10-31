@@ -111,6 +111,22 @@ namespace YourProject.Controllers
 
             return Ok(income);
         }
+        
+        [HttpDelete("{id}")]
+        public IActionResult DeleteIncome(int id)
+        {
+            var income = _dbContext.Incomes.FirstOrDefault(e => e.Id == id);
+
+            if (income == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Incomes.Remove(income);
+            _dbContext.SaveChanges();
+
+            return NoContent(); // Returns 204 No Content on success
+        }
     }
 
 }

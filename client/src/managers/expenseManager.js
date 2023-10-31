@@ -47,4 +47,25 @@ export const updateExpense = (expenseId, updatedData) => {
       return res.json();
     }
   });
+
+  
 };
+export const deleteExpense = (expenseId) => {
+  const _apiUrl = `/api/expense`;
+
+  return fetch(`${_apiUrl}/${expenseId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    if (res.status === 204) {
+      return "Expense deleted successfully";
+    } else {
+      return Promise.reject("Failed to delete expense");
+    }
+  });
+};
+
+
+

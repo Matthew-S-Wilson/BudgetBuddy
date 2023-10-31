@@ -113,6 +113,21 @@ public IActionResult UpdateExpense(int id, [FromBody] Expense updatedExpense)
 
     return Ok(expense);
 }
+[HttpDelete("{id}")]
+public IActionResult DeleteExpense(int id)
+{
+    var expense = _dbContext.Expenses.FirstOrDefault(e => e.Id == id);
+
+    if (expense == null)
+    {
+        return NotFound();
+    }
+
+    _dbContext.Expenses.Remove(expense);
+    _dbContext.SaveChanges();
+
+    return NoContent(); // Returns 204 No Content on success
+}
 
 
 
